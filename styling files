@@ -1,0 +1,16 @@
+LINEAR GRADIENT // IMP //
+background: linear-gradient(135deg, #7c1599 0%, #921099 48%, #7e4ae8 100%);
+BOX SHADOW // 
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+3rd is spread-radius .player:-webkit-full-screen {
+    max-width: none;
+    width: 100%;
+}
+
+
+/* :-webkit this means property will be applied when screen size is full-screen*/
+
+👀 background: linear-gradient(45deg, hsla(340, 100%, 55%, 1) 0%, hsla(340, 100%, 55%, 0) 70%),
+linear-gradient(135deg, hsla(225, 95%, 50%, 1) 10%, hsla(225, 95%, 50%, 0) 80%),
+linear-gradient(225deg, hsla(140, 90%, 50%, 1) 10%, hsla(140, 90%, 50%, 0) 80%),
+linear-gradient(315deg, hsla(35, 95%, 55%, 1) 100%, hsla(35, 95%, 55%, 0) 70%);

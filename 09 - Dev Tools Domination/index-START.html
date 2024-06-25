@@ -1,47 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Console Tricks!</title>
-  <link rel="icon" href="https://fav.farm/🔥" />
+    <meta charset="UTF-8">
+    <title>Console Tricks!</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
 
-  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+    <p onClick="makeGreen()">×BREAK×DOWN×</p>
 
-  <script>
-    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+    <script>
+        const dogs = [{
+            name: 'Snickers',
+            age: 2
+        }, {
+            name: 'hugo',
+            age: 8
+        }];
 
-    function makeGreen() {
-      const p = document.querySelector('p');
-      p.style.color = '#BADA55';
-      p.style.fontSize = '50px';
-    }
+        function makeGreen() {
+            const p = document.querySelector('p');
+            p.style.color = '#BADA55';
+            p.style.fontSize = '50px';
+        }
 
-    // Regular
+        // Regular
 
-    // Interpolated
+        // Interpolated
 
-    // Styled
+        console.log('helo');
 
-    // warning!
+        // Styled
+        console.log('%c I am baba bhush', 'font-size:50px; background:red;')
+            // warning!
+        console.warn('oh wooh')
 
-    // Error :|
+        // Error :|
+        console.error("error")
 
-    // Info
+        // Info
+        console.info("a am the best in the world")
 
-    // Testing
+        // Testing
 
-    // clearing
+        console.assert(1 === 2, 'wrong')
 
-    // Viewing DOM Elements
+        // clearing
 
-    // Grouping together
+        // Viewing DOM Elements
 
-    // counting
+        // Grouping together
+        dogs.forEach(dog => {
+            console.group(`${dog.name}`);
+            console
+        })
 
-    // timing
+        // counting
 
-  </script>
+        // timing
+    </script>
 </body>
+
 </html>

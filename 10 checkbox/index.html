@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="scripts.js">
+</head>
+
+<body>
+    <style>
+        html {
+            background-color: yellow;
+            font-size: 20px;
+            font-family: sans-serif;
+        }
+        
+        body {
+            align-items: center;
+            text-align: center;
+        }
+        
+        .inbox {
+            border: 1px solid black;
+            max-width: 450px;
+            margin: 50px auto;
+            background-color: rgb(255, 255, 255);
+        }
+        
+        .item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #F1F1F1;
+        }
+        
+        .delete {
+            background-color: transparent;
+            border: none;
+            color: red;
+            padding-right: 10px;
+        }
+        
+        .item:last-child {
+            border-bottom: none;
+        }
+        
+        input:checked+p {
+            background: #F9F9F9;
+            text-decoration: line-through;
+        }
+        
+        input[type="checkbox"] {
+            margin: 20px;
+        }
+        
+        p {
+            margin: 0;
+            padding: 20px;
+            transition: background 0.2s;
+            flex: 1;
+            font-family: 'helvetica neue';
+            font-size: 20px;
+            font-weight: 200;
+            border-left: 1px solid #D1E2FF;
+        }
+        
+        .addnew {
+            width: 300px;
+            height: 30px;
+        }
+    </style>
+    <div class="inbox">
+        <div class="item">
+            <input type="checkbox">
+            <p>This is our 6 month plan</p>
+            <button class="delete">DELETE</button>
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Learn JavaScript fundamentals</p>
+            <button class="delete">DELETE</button>
+
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>30 JavaScript projects</p>
+            <button class="delete">DELETE</button>
+
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Learn React Js</p>
+            <button class="delete">DELETE</button>
+
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>21 React front-end Projects</p>
+            <button class="delete">DELETE</button>
+
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Learn Backend fundamentals - 2months</p>
+            <button class="delete">DELETE</button>
+
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Make full stack projects - 1 month</p>
+            <button class="delete">DELETE</button>
+
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Practice DSA and start building you LinkedIN profile</p>
+            <button class="delete">DELETE</button>
+
+        </div>
+    </div>
+    <input id="addnew" class="addnew" type="text" placeholder="add new item here">
+    <button class="add">Add New</button>
+
+    <script>
+        let container = document.querySelector('.inbox')
+        console.log(container)
+        let inputBoxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+        const addbtn = document.querySelector('.add ');
+        const newinput = document.getElementById('addnew')
+        let deleteBtn = document.querySelectorAll('.delete')
+
+        let lastChecked;
+
+        function checkHandle(e) {
+            let inBetween;
+            if (e.shiftKey && this.checked) {
+                inputBoxes.forEach(checkbox => {
+                    if (checkbox === this || checkbox === lastChecked) {
+                        inBetween = !inBetween;
+
+
+                    }
+                    if (inBetween) {
+                        checkbox.checked = true;
+                    }
+                });
+
+            }
+            lastChecked = this
+        }
+
+        function handleAdd() {
+            const message = newinput.value;
+            if (!message) {
+                return
+            }
+            container.innerHTML = container.innerHTML + ` <div class="item">
+            <input type="checkbox">
+            <p>${message}</p>
+                        <button class="delete">DELETE</button>
+
+            </div>`
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.addEventListener('click', checkHandle);
+
+            const p = document.createElement('p');
+            p.textContent = message;
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete';
+            deleteBtn.textContent = 'DELETE';
+            deleteBtn.addEventListener('click', handleDelete);
+
+            itemDiv.appendChild(checkbox);
+            itemDiv.appendChild(p);
+            itemDiv.appendChild(deleteBtn);
+
+            container.appendChild(itemDiv);
+            newInput.value = '';
+
+
+
+
+
+        }
+
+        function handleDelete(e) {
+
+            const divToRemove = e.target.closest('.item')
+
+            container.removeChild(divToRemove)
+
+        }
+
+        addbtn.addEventListener('click', handleAdd)
+        deleteBtn.forEach(btn => btn.addEventListener("click", handleDelete))
+
+
+        inputBoxes.forEach(checkbox => checkbox.addEventListener('click', checkHandle))
+    </script>
+
+</body>
+
+</html>

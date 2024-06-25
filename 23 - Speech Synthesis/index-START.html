@@ -1,42 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Speech Synthesis</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="https://fav.farm/🔥" />
+    <meta charset="UTF-8">
+    <title>Speech Synthesis</title>
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
 
     <div class="voiceinator">
 
-      <h1>The Voiceinator 5000</h1>
+        <h1>The Voiceinator 5000</h1>
 
-      <select name="voice" id="voices">
+        <select name="voice" id="voices">
         <option value="">Select A Voice</option>
-      </select>
+        </select>
 
-      <label for="rate">Rate:</label>
-      <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+        <label for="rate">Rate:</label>
+        <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
 
-      <label for="pitch">Pitch:</label>
+        <label for="pitch">Pitch:</label>
 
-      <input name="pitch" type="range" min="0" max="2" step="0.1">
-      <textarea name="text">Hello! I love JavaScript 👍</textarea>
-      <button id="stop">Stop!</button>
-      <button id="speak">Speak</button>
+        <input name="pitch" type="range" min="0" max="2" step="0.1">
+        <textarea name="text">Hello! I love JavaScript 👍</textarea>
+        <button id="stop">Stop!</button>
+        <button id="speak">Speak</button>
+        <button id="listen">listen</button>
 
     </div>
 
-<script>
-  const msg = new SpeechSynthesisUtterance();
-  let voices = [];
-  const voicesDropdown = document.querySelector('[name="voice"]');
-  const options = document.querySelectorAll('[type="range"], [name="text"]');
-  const speakButton = document.querySelector('#speak');
-  const stopButton = document.querySelector('#stop');
-</script>
+    <script>
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let p = document.createElement('p')
+        const msg = new SpeechSynthesisUtterance();
+        const preRecognition = new SpeechRecognition()
+        let listeningForCommand = true;
+        // preRecognition.interimResults = true;
+        preRecognition.interimResults = true;
+
+        preRecognition.lang = 'en-US';
+
+        preRecognition.addEventListener("result", e => {
+            const transcript = Array.from(e.results)
+                .map(result => result[0])
+                .map(result => result.transcript)
+                .join('');
+
+            console.log(transcript)
+
+            p.innerHTML = transcript;
+            if (p.innerHTML.includes('listen')) {
+                listeningForCommand = false;
+                preRecognition.stop();
+                setTimeout(() => {
+                    listenCarefully()
+                }, 1000)
+
+            }
+
+
+        })
+
+
+
+        preRecognition.addEventListener('end', () => {
+            if (listeningForCommand) preRecognition.start();
+        });
+
+        preRecognition.start()
+        let voices = [];
+        const voicesDropdown = document.querySelector('[name="voice"]');
+        const options = document.querySelectorAll('[type="range"], [name="text"]');
+        const speakButton = document.querySelector('#speak');
+        const stopButton = document.querySelector('#stop');
+        const listenButton = document.querySelector('#listen');
+        const textBox = document.querySelector('[name = "text"]');
+        console.log(textBox.value)
+
+        function populateVoices(e) {
+            console.log(e)
+            voices = this.getVoices();
+            console.log(voices)
+            voicesDropdown.innerHTML = voices
+                .map(voice => `<option value="voice.name">${voice.nae} (${voice.lang})</option>`)
+                .join('');
+        }
+
+        function toggle(speakOver = true) {
+            speechSynthesis.cancel()
+            if (speakOver) {
+                msg.text = textBox.value;
+
+                speechSynthesis.speak(msg)
+            }
+        }
+
+        function setVoice() {
+            msg.voice = voices.find(voice => voice.name === this.value)
+        }
+
+        function setOption() {
+            msg[this.name] = this.value;
+
+        }
+
+        function listenCarefully() {
+
+            const recognition = new SpeechRecognition()
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            recognition.addEventListener('result', e => {
+                const transcript = Array.from(e.results)
+                    .map(result => result[0])
+                    .map(result => result.transcript)
+                    .join('');
+
+                const poopScript = transcript.replace(/poop|poo|shit|dump/gi, '💩');
+                textBox.textContent = poopScript;
+
+
+            });
+
+
+            recognition.start()
+                // recognition.addEventListener('end', preRecognition.start);
+
+
+            // recognition.stop()
+
+        }
+        speechSynthesis.addEventListener("voiceschanged", populateVoices)
+        voicesDropdown.addEventListener("change", setVoice)
+        options.forEach(option => option.addEventListener('change', setOption))
+        speakButton.addEventListener('click', toggle)
+        stopButton.addEventListener('click', () => toggle(false))
+        listenButton.addEventListener('click', listenCarefully)
+    </script>
 
 </body>
+
 </html>
